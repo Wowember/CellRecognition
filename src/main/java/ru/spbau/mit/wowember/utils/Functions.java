@@ -1,6 +1,6 @@
 package ru.spbau.mit.wowember.utils;
 
-import ru.spbau.mit.wowember.filters.Cell;
+import ru.spbau.mit.wowember.Cell;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

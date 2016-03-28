@@ -11,11 +11,11 @@ public class Main {
 
     public static void main(String[] args) {
         //String path = args[0];
-        String path = "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\control";
-                // "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\5mkg";
-                // "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\01mkg";
-                // "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\1mkg";
-                //"C:\\Users\\Wowember\\Desktop\\Images";
+        String path = //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\control";
+                 //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\5mkg";
+                 //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\01mkg";
+                 //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\1mkg";
+                "C:\\Users\\Wowember\\Desktop\\Images";
         List<String> cellImageList = Arrays.asList(new File(path).list()).stream()
                 .filter(x -> x.endsWith(".tif")).collect(Collectors.toList());
         List<CellRecognizer> cellRecognizerList = new ArrayList<>();
@@ -26,12 +26,21 @@ public class Main {
                 e.printStackTrace();
             }
         }
+        long directoryAverageFluorescence = 0;
+        long directoryPixelsCount = 0;
         for (CellRecognizer cr: cellRecognizerList) {
             try {
                 cr.recognizeAndSave();
+                for (Cell cell: cr.getCells()) {
+                    directoryPixelsCount += cell.getNonBlackPixelsCount();
+                    directoryAverageFluorescence += cell.getAverageForNonBlackPixelsFluorescence()
+                            * cell.getNonBlackPixelsCount();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        System.out.print("DirectoryAverageFluorescence = "
+                + (long) (directoryAverageFluorescence / (double) directoryPixelsCount) + "\n");
     }
 }

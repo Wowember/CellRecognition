@@ -1,6 +1,5 @@
 package ru.spbau.mit.wowember;
 
-import ru.spbau.mit.wowember.filters.Cell;
 import ru.spbau.mit.wowember.utils.Constants;
 import ru.spbau.mit.wowember.utils.Coordinate;
 
@@ -72,6 +71,10 @@ public class CellRecognizer {
         save();
     }
 
+    public List<Cell> getCells() {
+        return cells;
+    }
+
     private void save() throws IOException {
         int[][] newPixelsArray = new int[width][height];
         for (int i = 0; i < width; i++) {
@@ -92,7 +95,7 @@ public class CellRecognizer {
         }
         pixelsArray = newPixelsArray;
 
-        Filters.toBlackAndWhiteImage(pixelsArray);
+        //Filters.toBlackAndWhiteImage(pixelsArray);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 image.setRGB(i, j, pixelsArray[i][j]);

@@ -1,6 +1,5 @@
 package ru.spbau.mit.wowember;
 
-import ru.spbau.mit.wowember.filters.Cell;
 import ru.spbau.mit.wowember.utils.Constants;
 import ru.spbau.mit.wowember.utils.Coordinate;
 import ru.spbau.mit.wowember.utils.Functions;
