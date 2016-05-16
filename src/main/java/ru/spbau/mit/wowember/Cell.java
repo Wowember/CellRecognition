@@ -10,16 +10,16 @@ import java.util.List;
 
 public class Cell {
 
-    private final int width;
-    private final int height;
-    private final Coordinate upperLeftCellPixel;
+    private int width;
+    private int height;
+    private Coordinate upperLeftCellPixel;
 
     private int minWidth = (int) 1e9;
     private int minHeight = (int) 1e9;
     private int[][] pixelsArray;
     private long averageFluorescence;
 
-    public Cell(int[][] pixelsArray, int[][] used, int cellNumber, Coordinate upperLeftCellPixel) {
+    private void initialize(int[][] pixelsArray, int[][] used, int cellNumber, Coordinate upperLeftCellPixel) {
         int maxWidth = 0;
         int maxHeight = 0;
         for (int i = 0; i < used.length; i++) {
@@ -47,6 +47,15 @@ public class Cell {
             }
         }
         updateAverageFluorescence();
+    }
+
+    public Cell(int[][] pixelsArray, int[][] used, int cellNumber, Coordinate upperLeftCellPixel) {
+        initialize(pixelsArray, used, cellNumber, upperLeftCellPixel);
+    }
+
+    public Cell(Cell cell) {
+        initialize(cell.getPixelsArray(),
+                new int[cell.getWidth()][cell.getHeight()], 0, cell.getUpperLeftCellPixel());
     }
 
     private void updateAverageFluorescence() {

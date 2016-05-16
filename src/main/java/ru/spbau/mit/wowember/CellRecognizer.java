@@ -2,6 +2,7 @@ package ru.spbau.mit.wowember;
 
 import ru.spbau.mit.wowember.utils.Constants;
 import ru.spbau.mit.wowember.utils.Coordinate;
+import ru.spbau.mit.wowember.utils.Functions;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,6 +19,7 @@ public class CellRecognizer {
     private List<Cell> cells = new ArrayList<>();
     private final BufferedImage image;
     private int[][] pixelsArray;
+    private int[][] pxA;
 
 
     public CellRecognizer(String pathToImage) throws IOException {
@@ -28,9 +30,11 @@ public class CellRecognizer {
         height = image.getHeight();
 
         pixelsArray = new int[width][height];
+        pxA = new int[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 pixelsArray[i][j] = image.getRGB(i, j);
+                pxA[i][j] = pixelsArray[i][j];
             }
         }
         cells.add(new Cell(pixelsArray, new int[width][height], 0, new Coordinate(0, 0)));
@@ -52,7 +56,7 @@ public class CellRecognizer {
 
         List<Cell> newCells = new ArrayList<>();
         for (Cell cell: cells) {
-            Filters.AverageFluorescenceFilter(cell);
+            Filters.averageFluorescenceFilter(cell);
             newCells.addAll(cell.divideIntoCells());
         }
         System.err.println(newCells.size());
@@ -61,11 +65,14 @@ public class CellRecognizer {
         cells = newCells;
         newCells = tmp;
 
-        for (Cell cell: cells) {
-            Filters.AverageFluorescenceWithoutBlackPixelsFilter(cell);
+        /*for (Cell cell: cells) {
+            Filters.averageFluorescenceWithoutBlackPixelsFilter(cell);
             newCells.addAll(cell.divideIntoCells());
         }
         cells = newCells;
+        System.err.println(cells.size());*/
+
+        cells = Filters.averageFluorescenceBinarySearchFilter(cells);
         System.err.println(cells.size());
 
         save();
@@ -95,7 +102,11 @@ public class CellRecognizer {
         }
         pixelsArray = newPixelsArray;
 
-        //Filters.toBlackAndWhiteImage(pixelsArray);
+        //Cell C = new Cell(pxA, new int[width][height], 0, new Coordinate(0, 0));
+        //Filters.averageFluorescenceFilter(C);
+        //pixelsArray = C.getPixelsArray();
+
+        Filters.toBlackAndWhiteImage(pixelsArray);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 image.setRGB(i, j, pixelsArray[i][j]);
@@ -111,6 +122,7 @@ public class CellRecognizer {
         ImageIO.write(image, "tif", recognizedImageFile);
         for (int i = 0; i < cells.size(); i++) {
             File file = new File(pathToRecognizedImage + "\\" + i + ".tif");
+            Filters.toBlackAndWhiteImage(cells.get(i).getPixelsArray());
             ImageIO.write(cells.get(i).getImage(), "tif", file);
         }
     }
