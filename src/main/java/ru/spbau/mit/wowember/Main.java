@@ -10,17 +10,9 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        //String path = args[0];
-        String path = //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\control";
-                // "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\5mkg";
-                 //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\01mkg";
-                //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\1mkg";
-                //"C:\\Users\\Wowember\\Desktop\\Images";
-                //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\qwertyu";
-                //"C:\\Users\\Wowember\\Desktop\\qwertyui";
-                //"C:\\Users\\Wowember\\Desktop\\qwerty";
-                //"C:\\Users\\Wowember\\Desktop\\qwqwqwq";
-                "C:\\Users\\Wowember\\Desktop\\HandMade";
+        String path = "test";
+
+
         List<String> cellImageList = Arrays.asList(new File(path).list()).stream()
                 .filter(x -> x.endsWith(".tif")).collect(Collectors.toList());
         List<CellRecognizer> cellRecognizerList = new ArrayList<>();

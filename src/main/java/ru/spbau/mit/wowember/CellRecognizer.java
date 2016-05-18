@@ -107,11 +107,6 @@ public class CellRecognizer {
         }
         pixelsArray = newPixelsArray;
 
-        //Cell C = new Cell(pxA, new int[width][height], 0, new Coordinate(0, 0));
-        //Filters.averageFluorescenceFilter(C);
-        //pixelsArray = C.getPixelsArray();
-
-        //Filters.toBlackAndWhiteImage(pixelsArray);
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 image.setRGB(i, j, pixelsArray[i][j]);
@@ -133,7 +128,6 @@ public class CellRecognizer {
         ImageIO.write(image, "tif", recognizedImageFile);
         for (int i = 0; i < cells.size(); i++) {
             File file = new File(pathToRecognizedImage + "\\" + i + ".tif");
-            //Filters.toBlackAndWhiteImage(cells.get(i).getPixelsArray());
             ImageIO.write(cells.get(i).getImage(), "tif", file);
         }
     }
