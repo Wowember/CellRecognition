@@ -105,6 +105,24 @@ public class Filters {
         }
     }
 
+    public static List<Cell> cellFilter(List<Cell> cells) {
+        List<Cell> newCells = new ArrayList<>();
+        for (Cell cell: cells) {
+            int maxfl = 0;
+            for (int i = 0; i < cell.getWidth(); i++) {
+                for (int j = 0; j < cell.getHeight(); j++) {
+                     if (Functions.getPixelFluorescence(cell.getPixelsArray()[i][j]) > maxfl) {
+                         maxfl = Functions.getPixelFluorescence(cell.getPixelsArray()[i][j]);
+                     }
+                }
+            }
+            if (maxfl > Math.max(1.5 * cell.getAverageForNonBlackPixelsFluorescence(),
+                    cell.getAverageForNonBlackPixelsFluorescence() + 30)) {
+                newCells.add(cell);
+            }
+        }
+        return newCells;
+    }
     /*private int getBlackCountInCircle(int radius) {
 
     }
