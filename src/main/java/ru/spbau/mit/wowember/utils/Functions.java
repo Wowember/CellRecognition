@@ -64,15 +64,7 @@ public final class Functions {
                             used[nx][ny] = 1;
                             deque.addLast(nextPixel);
                         }
-                    } /*else if (distance[nx][ny] == distance[currentPixel.getX()][currentPixel.getY()] + 1
-                            && currentNumber[nx][ny] != cellNumber) {
-                        distance[nx][ny] = distance[currentPixel.getX()][currentPixel.getY()] + 1;
-                        currentNumber[nx][ny] = (int) 1e9;
-                        if (used[nx][ny] == 0) {
-                            used[nx][ny] = 1;
-                            deque.addLast(nextPixel);
-                        }
-                    }*/
+                    }
                 }
             }
         }

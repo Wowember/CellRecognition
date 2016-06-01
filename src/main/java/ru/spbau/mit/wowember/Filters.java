@@ -123,20 +123,5 @@ public class Filters {
         }
         return newCells;
     }
-    /*private int getBlackCountInCircle(int radius) {
 
-    }
-    public static int findNucleus(Cell cell) {
-        for (int i = 0; i < cell.getWidth(); i++) {
-            for (int j = 0; j < cell.getHeight(); j++) {
-                int sum = 1;
-                int sumBlack = 0;
-                for (int k = 0; k < 100; k++) {
-                    sumBlack += getBlackCountInCircle(k);
-                    sum += k * 4;
-                }
-
-            }
-        }
-    }*/
 }

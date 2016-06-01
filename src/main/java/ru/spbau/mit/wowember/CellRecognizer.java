@@ -25,6 +25,7 @@ public class CellRecognizer {
     private int[][] pxA;
     private int allSellsCount = 0;
     private int recognizedSellsCount = 0;
+    private double accuracy = 0;
 
 
     public CellRecognizer(String pathToImage) throws IOException {
@@ -70,13 +71,6 @@ public class CellRecognizer {
         cells = newCells;
         newCells = tmp;
 
-        /*for (Cell cell: cells) {
-            Filters.averageFluorescenceWithoutBlackPixelsFilter(cell);
-            newCells.addAll(cell.divideIntoCells());
-        }
-        cells = newCells;*/
-        //System.err.println(cells.size());
-
         cells = Filters.averageFluorescenceBinarySearchFilter(cells);
         //System.err.println(cells.size());
 
@@ -113,7 +107,7 @@ public class CellRecognizer {
         int[][] currentNumber = new int[width][height];
         Cell newCell = new Cell(newPixelsArray, new int[width][height], 0, new Coordinate(0, 0));
         Cell oldCell =  new Cell(pixelsArray, new int[width][height], 0, new Coordinate(0, 0));
-        Filters.fluorescenceFilter(oldCell, oldCell.getAverageFluorescence() / 3);
+        Filters.fluorescenceFilter(oldCell, oldCell.getAverageFluorescence() / 2);
         int cellCount = 1;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -147,21 +141,15 @@ public class CellRecognizer {
             }
         }
 
-        /*pixelsArray = oldCell.getPixelsArray();
-
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (currentNumber[i][j] != 1) {
-                    pixelsArray[i][j] = Constants.BLACK_COLOR.getRGB();
-                }
-            }
-        }*/
-
         cells.clear();
         for (int i = 1; i < cellCount; i++) {
-            cells.addAll((new Cell(oldCell.getPixelsArray(), currentNumber, i, new Coordinate(0, 0))).divideIntoCells());
+            Cell c = (new Cell(oldCell.getPixelsArray(), currentNumber, i, new Coordinate(0, 0)));
+            Filters.fluorescenceFilter(c, c.getAverageFluorescence() / 4);
+            cells.addAll(c.divideIntoCells());
         }
 
+
+        //pixelsArray = newPixelsArray;
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -170,11 +158,12 @@ public class CellRecognizer {
         }
 
 
-        //compareResults();
+        compareResults();
         System.err.print(imageFile.getName()
                 + ":\nFound Sells: " + cells.size()
                 + ",\n Correctly Recognized: " + recognizedSellsCount + "/" + allSellsCount
-                + ",\n Accuracy: " + ((double) recognizedSellsCount / allSellsCount + "\n\n"));
+                + ",\n SegregateAccuracy: " + ((double) recognizedSellsCount / allSellsCount
+                + ", \n RecognizeAccuracy: " + (accuracy / allSellsCount) + "\n\n"));
 
         new File(imageFile.getParent() + "Recognized").mkdir();
         String pathToRecognizedImage = imageFile.getParent() + "Recognized\\"
@@ -215,6 +204,8 @@ public class CellRecognizer {
                         && */isInner(cell.getUpperLeftCellPixel(), new Coordinate(cell.getWidth(), cell.getHeight()),
                         innerCellCoordinate[i], innerCellSize[i])) {
                     recognizedSellsCount++;
+                    accuracy += Math.min(1, (cell.getWidth() * cell.getHeight())
+                            / ((double) outerCellSize[i].getX() * outerCellSize[i].getY()));
                     break;
                 }
             }

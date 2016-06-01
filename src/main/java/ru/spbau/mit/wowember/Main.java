@@ -10,11 +10,8 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        String path = //"test";
-                //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\01mkg";
-                //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\1mkg";
-                //"C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\5mkg";
-                "C:\\Users\\Wowember\\Desktop\\07-27-11-taxolVero\\control";
+        String path = "test";
+
 
 
         List<String> cellImageList = Arrays.asList(new File(path).list()).stream()
